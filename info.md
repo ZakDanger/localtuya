@@ -1,8 +1,10 @@
-[![](https://img.shields.io/github/release/rospogrigio/localtuya-homeassistant/all.svg?style=for-the-badge)](https://github.com/rospogrigio/localtuya-homeassistant/releases)
+[![](https://img.shields.io/github/release/rospogrigio/localtuya-homeassistant/all.svg?style=for-the-badge)](https://github.com/ZakDanger/localtuya/releases)
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg?style=for-the-badge)](https://github.com/custom-components/hacs)
 [![](https://img.shields.io/badge/MAINTAINER-%40rospogrigio-green?style=for-the-badge)](https://github.com/rospogrigio)
 
-![logo](https://github.com/rospogrigio/localtuya-homeassistant/blob/master/img/logo-small.png)
+![logo](https://github.com/ZakDanger/localtuya/blob/master/img/logo-small.png)
+
+Customised version by ZakDanger.
 
 A Home Assistant custom Integration for local handling of Tuya-based devices.
 
