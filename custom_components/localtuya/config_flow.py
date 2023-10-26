@@ -341,12 +341,21 @@ class LocaltuyaConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     def __init__(self):
         """Initialize a new LocaltuyaConfigFlow."""
 
+    # this gets called as the first step of adding localtuya as an integration.
+    # it also gets called if you click on "ADD ENTRY" when localtuya has already been installed.
+    # this second case can delete all entries!!!
     async def async_step_user(self, user_input=None):
         """Handle the initial step."""
         errors = {}
         placeholders = {}
         _LOGGER.error("LocaltuyaConfigFlow->async_step_user user_input=%s", str(user_input))
+        #return await self.async_step_add_device()
+        
+        # when this form is initially displayed, this will be None
+        # this is not None when submitting this form
         if user_input is not None:
+            # if "No Cloud" is ticked, then set empty values for all data
+            # otherwise use the passed in data
             if user_input.get(CONF_NO_CLOUD):
                 for i in [CONF_CLIENT_ID, CONF_CLIENT_SECRET, CONF_USER_ID]:
                     user_input[i] = ""
@@ -371,8 +380,8 @@ class LocaltuyaConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
     async def _create_entry(self, user_input):
         """Register new entry."""
-        # if self._async_current_entries():
-        #     return self.async_abort(reason="already_configured")
+        if self._async_current_entries():
+            return self.async_abort(reason="already_configured")
 
         await self.async_set_unique_id(user_input.get(CONF_USER_ID))
         user_input[CONF_DEVICES] = {}
