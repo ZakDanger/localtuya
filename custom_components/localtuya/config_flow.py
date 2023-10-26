@@ -345,6 +345,7 @@ class LocaltuyaConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         """Handle the initial step."""
         errors = {}
         placeholders = {}
+        _LOGGER.error("LocaltuyaConfigFlow->async_step_user user_input=%s", str(user_input))
         if user_input is not None:
             if user_input.get(CONF_NO_CLOUD):
                 for i in [CONF_CLIENT_ID, CONF_CLIENT_SECRET, CONF_USER_ID]:
@@ -407,6 +408,8 @@ class LocalTuyaOptionsFlowHandler(config_entries.OptionsFlow):
     async def async_step_init(self, user_input=None):
         """Manage basic options."""
         # device_id = self.config_entry.data[CONF_DEVICE_ID]
+        _LOGGER.error("LocalTuyaOptionsFlowHandler->async_step_init user_input=%s", str(user_input))
+
         if user_input is not None:
             if user_input.get(CONF_ACTION) == CONF_SETUP_CLOUD:
                 return await self.async_step_cloud_setup()

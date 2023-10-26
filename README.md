@@ -47,7 +47,7 @@ For manual installation, copy the localtuya folder and all of its contents into 
 **NOTE: starting from v4.0.0, configuration using YAML files is no longer supported. The integration can only be configured using the config flow.**
 
 
-To start configuring the integration, just press the "+ADD INTEGRATION" button in the Settings - Integrations page, and select LocalTuya from the drop-down menu.
+To start configuring the integration, just press the "+ADD INTEGRATION" button in the Settings - Devices & Services page, and select LocalTuya integration from the drop-down menu.
 The Cloud API configuration page will appear, requesting to input your Tuya IoT Platform account credentials:
 
 ![cloud_setup](https://github.com/rospogrigio/localtuya-homeassistant/blob/master/img/9-cloud_setup.png)
