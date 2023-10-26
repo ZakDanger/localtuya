@@ -348,7 +348,7 @@ class LocaltuyaConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         """Handle the initial step."""
         errors = {}
         placeholders = {}
-        _LOGGER.error("LocaltuyaConfigFlow->async_step_user user_input=%s", str(user_input))
+        _LOGGER.info("LocaltuyaConfigFlow->async_step_user user_input=%s", str(user_input))
         #return await self.async_get_options_flow(config_entries.ConfigFlow).async_step_add_device()
         
         # this gets called when the user starts config-flow via the user interface.
@@ -419,7 +419,7 @@ class LocalTuyaOptionsFlowHandler(config_entries.OptionsFlow):
     async def async_step_init(self, user_input=None):
         """Manage basic options."""
         # device_id = self.config_entry.data[CONF_DEVICE_ID]
-        _LOGGER.error("LocalTuyaOptionsFlowHandler->async_step_init user_input=%s", str(user_input))
+        _LOGGER.info("LocalTuyaOptionsFlowHandler->async_step_init user_input=%s", str(user_input))
 
         if user_input is not None:
             if user_input.get(CONF_ACTION) == CONF_SETUP_CLOUD:
@@ -500,12 +500,18 @@ class LocalTuyaOptionsFlowHandler(config_entries.OptionsFlow):
         self.discovered_devices = {}
         data = self.hass.data.get(DOMAIN)
 
+        _LOGGER.info("LocalTuyaOptionsFlowHandler->async_step_add_device data=%s", str(data))
+        _LOGGER.info("LocalTuyaOptionsFlowHandler->async_step_add_device DATA_DISCOVERY=%s", str(DATA_DISCOVERY))
+        
         if data and DATA_DISCOVERY in data:
+            _LOGGER.info("LocalTuyaOptionsFlowHandler->async_step_add_device data[DATA_DISCOVERY].devices=%s", str(data[DATA_DISCOVERY].devices))
             self.discovered_devices = data[DATA_DISCOVERY].devices
         else:
+            _LOGGER.info("LocalTuyaOptionsFlowHandler->async_step_add_device discovering...")
             try:
                 self.discovered_devices = await discover()
             except OSError as ex:
+                _LOGGER.info("LocalTuyaOptionsFlowHandler->async_step_add_device discovering...OSError: errno=%d", ex.errno)
                 if ex.errno == errno.EADDRINUSE:
                     errors["base"] = "address_in_use"
                 else:
@@ -513,6 +519,8 @@ class LocalTuyaOptionsFlowHandler(config_entries.OptionsFlow):
             except Exception as ex:
                 _LOGGER.exception("discovery failed: %s", ex)
                 errors["base"] = "discovery_failed"
+
+        _LOGGER.info("LocalTuyaOptionsFlowHandler->async_step_add_device discovering...done discovered_devices=%s", self.discovered_devices)
 
         devices = {
             dev_id: dev["ip"]
