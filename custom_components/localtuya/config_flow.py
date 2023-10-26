@@ -349,7 +349,7 @@ class LocaltuyaConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         errors = {}
         placeholders = {}
         _LOGGER.error("LocaltuyaConfigFlow->async_step_user user_input=%s", str(user_input))
-        return await self.async_get_options_flow(config_entries.ConfigFlow).async_step_add_device()
+        #return await self.async_get_options_flow(config_entries.ConfigFlow).async_step_add_device()
         
         # this gets called when the user starts config-flow via the user interface.
         # when this form is initially displayed, this will be None
