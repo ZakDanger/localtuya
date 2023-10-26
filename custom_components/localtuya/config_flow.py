@@ -349,8 +349,9 @@ class LocaltuyaConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         errors = {}
         placeholders = {}
         _LOGGER.error("LocaltuyaConfigFlow->async_step_user user_input=%s", str(user_input))
-        #return await self.async_step_add_device()
+        return await self.async_get_options_flow(config_entries.ConfigFlow).async_step_add_device()
         
+        # this gets called when the user starts config-flow via the user interface.
         # when this form is initially displayed, this will be None
         # this is not None when submitting this form
         if user_input is not None:
@@ -414,6 +415,7 @@ class LocalTuyaOptionsFlowHandler(config_entries.OptionsFlow):
         self.discovered_devices = {}
         self.entities = []
 
+    # first step in options flow
     async def async_step_init(self, user_input=None):
         """Manage basic options."""
         # device_id = self.config_entry.data[CONF_DEVICE_ID]
