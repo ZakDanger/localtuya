@@ -1,4 +1,4 @@
-![logo](https://github.com/ZakDanger/localtuya/blob/master/img/logo-small.png)
+![logo](https://github.com/rospogrigio/localtuya-homeassistant/blob/master/img/logo-small.png)
 
 Custom version by Zak.
 
