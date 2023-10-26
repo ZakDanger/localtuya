@@ -503,7 +503,8 @@ class LocalTuyaOptionsFlowHandler(config_entries.OptionsFlow):
         _LOGGER.info("LocalTuyaOptionsFlowHandler->async_step_add_device data=%s", str(data))
         _LOGGER.info("LocalTuyaOptionsFlowHandler->async_step_add_device DATA_DISCOVERY=%s", str(DATA_DISCOVERY))
         
-        if data and DATA_DISCOVERY in data:
+        #if data and DATA_DISCOVERY in data:
+        if False:
             _LOGGER.info("LocalTuyaOptionsFlowHandler->async_step_add_device data[DATA_DISCOVERY].devices=%s", str(data[DATA_DISCOVERY].devices))
             self.discovered_devices = data[DATA_DISCOVERY].devices
         else:
@@ -520,7 +521,7 @@ class LocalTuyaOptionsFlowHandler(config_entries.OptionsFlow):
                 _LOGGER.exception("discovery failed: %s", ex)
                 errors["base"] = "discovery_failed"
 
-        _LOGGER.info("LocalTuyaOptionsFlowHandler->async_step_add_device discovering...done discovered_devices=%s", self.discovered_devices)
+        _LOGGER.info("LocalTuyaOptionsFlowHandler->async_step_add_device discovering done discovered_devices=%s", self.discovered_devices)
 
         devices = {
             dev_id: dev["ip"]
