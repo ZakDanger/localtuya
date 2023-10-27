@@ -80,11 +80,17 @@ class TuyaDiscovery(asyncio.DatagramProtocol):
     
     def load_from_file(self, fn="localtuya-discovery.json"):
         """Load devices from config file."""
+        _LOGGER.info("TuyaDiscovery.load_from_file(%s)", fn)
         with open(fn, "rt", encoding="utf8") as f:
+            _LOGGER.info("TuyaDiscovery.load_from_file() opened file ok")
             data = f.read()
+            _LOGGER.info("TuyaDiscovery.load_from_file() read data as %s", data)
             decoded = json.loads(data)
+            _LOGGER.info("TuyaDiscovery.load_from_file() decoded data as %s", decoded)
             for device in decoded:
+                _LOGGER.info("TuyaDiscovery.load_from_file() found device %s", device)
                 self.device_found(device)
+        _LOGGER.info("TuyaDiscovery.load_from_file(%s) DONE", fn)
 
 async def discover():
     """Discover and return devices on local network."""
