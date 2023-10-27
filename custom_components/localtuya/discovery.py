@@ -77,7 +77,14 @@ class TuyaDiscovery(asyncio.DatagramProtocol):
 
         if self._callback:
             self._callback(device)
-
+    
+    def load_from_file(self, fn="localtuya-discovery.json"):
+        """Load devices from config file."""
+        with open(fn, "rt", encoding="utf8") as f:
+            data = f.read()
+            decoded = json.loads(data)
+            for device in decoded:
+                self.device_found(device)
 
 async def discover():
     """Discover and return devices on local network."""
@@ -87,4 +94,5 @@ async def discover():
         await asyncio.sleep(DEFAULT_TIMEOUT)
     finally:
         discovery.close()
+    discovery.load_from_file()
     return discovery.devices
