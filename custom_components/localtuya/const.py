@@ -11,6 +11,7 @@ PLATFORMS = [
     "climate",
     "cover",
     "fan",
+    "garage_door",
     "light",
     "number",
     "select",
@@ -81,6 +82,14 @@ CONF_FAN_DIRECTION = "fan_direction"
 CONF_FAN_DIRECTION_FWD = "fan_direction_forward"
 CONF_FAN_DIRECTION_REV = "fan_direction_reverse"
 CONF_FAN_DPS_TYPE = "fan_dps_type"
+
+# garage door
+#CONF_COMMANDS_SET = "commands_set"
+#CONF_POSITIONING_MODE = "positioning_mode"
+#CONF_CURRENT_POSITION_DP = "current_position_dp"
+#CONF_SET_POSITION_DP = "set_position_dp"
+#CONF_POSITION_INVERTED = "position_inverted"
+#CONF_SPAN_TIME = "span_time"
 
 # sensor
 CONF_SCALING = "scaling"
