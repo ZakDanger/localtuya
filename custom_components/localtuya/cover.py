@@ -73,7 +73,7 @@ class LocaltuyaCover(LocalTuyaEntity, CoverEntity):
         self._open_cmd = commands_set.split("_")[0]
         self._close_cmd = commands_set.split("_")[1]
         self._stop_cmd = ""
-        if commands_set.split("_") > 2:
+        if len(commands_set.split("_")) > 2:
             self._stop_cmd = commands_set.split("_")[2]
         self._timer_start = time.time()
         self._state = self._stop_cmd
