@@ -59,7 +59,7 @@ def flow_schema(dps):
     }
 
 
-class LocaltuyaGarageDoor(LocalTuyaEntity, CoverEntity):
+class LocaltuyaGarageDoor(LocalTuyaEntity, ButtonEntity):
     """Tuya cover device."""
 
     def __init__(self, device, config_entry, switchid, **kwargs):
