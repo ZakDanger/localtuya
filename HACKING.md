@@ -117,6 +117,17 @@ Look at the contents of switch.py or sensor.py for examples of the contents of s
 
 
 const.py list ```PLATFORMS``` contains a list of filenames of entities to add.
+(it is only used directly by config_flow.py)
 can the entries in this be anything or do they have to be existing types?
+it appears they need to be existing components.. but this may be due to how the list is used.
+if i try to add "garage_door" it appears to add it successfully, but then the home assistant setup.py file gives an error trying to load it.
+if i try to add "button" it appears to be all good, since a "button" component already eists.
 
+
+!!! while on "Devices" screen for the localtuya integration, there is a "Add Device" button.
+clicking on this tries to setup a new integration
+Settings -> Devices & Services -> LocalTuya -> X devices -> Add Device.
+
+logs show this:
+2023-10-30 23:56:56.145 INFO (MainThread) [custom_components.localtuya.config_flow] LocaltuyaConfigFlow->async_step_user user_input=None
 
