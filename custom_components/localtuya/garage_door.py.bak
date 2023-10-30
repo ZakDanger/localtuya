@@ -1,4 +1,4 @@
-"""Platform to locally control Tuya-based cover devices."""
+"""Platform to locally control Tuya-based garage door cover devices."""
 import asyncio
 import logging
 import time
@@ -28,7 +28,8 @@ from .const import (
 _LOGGER = logging.getLogger(__name__)
 
 COVER_ONOFF_CMDS = "on_off_stop"
-COVER_OPENCLOSE_CMDS = "open_close_stop"
+COVER_OPENCLOSE_CMDS = "open_close"
+COVER_OPENCLOSESTOP_CMDS = "open_close_stop"
 COVER_FZZZ_CMDS = "fz_zz_stop"
 COVER_12_CMDS = "1_2_3"
 COVER_MODE_NONE = "none"
@@ -45,7 +46,7 @@ def flow_schema(dps):
     """Return schema used in config flow."""
     return {
         vol.Optional(CONF_COMMANDS_SET): vol.In(
-            [COVER_ONOFF_CMDS, COVER_OPENCLOSE_CMDS, COVER_FZZZ_CMDS, COVER_12_CMDS]
+            [COVER_ONOFF_CMDS, COVER_OPENCLOSE_CMDS, COVER_OPENCLOSESTOP_CMDS, COVER_FZZZ_CMDS, COVER_12_CMDS]
         ),
         vol.Optional(CONF_POSITIONING_MODE, default=DEFAULT_POSITIONING_MODE): vol.In(
             [COVER_MODE_NONE, COVER_MODE_POSITION, COVER_MODE_TIMED]
@@ -60,27 +61,32 @@ def flow_schema(dps):
 
 
 class LocaltuyaGarageDoor(LocalTuyaEntity, CoverEntity):
-    """Tuya cover device."""
+    """Tuya garage door device."""
 
     def __init__(self, device, config_entry, switchid, **kwargs):
         """Initialize a new LocaltuyaCover."""
         super().__init__(device, config_entry, switchid, _LOGGER, **kwargs)
+        self._state_dp_id = 3 # False=closed, True=open
         commands_set = DEFAULT_COMMANDS_SET
         if self.has_config(CONF_COMMANDS_SET):
             commands_set = self._config[CONF_COMMANDS_SET]
         self._open_cmd = commands_set.split("_")[0]
         self._close_cmd = commands_set.split("_")[1]
-        self._stop_cmd = commands_set.split("_")[2]
+        self._stop_cmd = ""
+        if len(commands_set.split("_")) > 2:
+            self._stop_cmd = commands_set.split("_")[2]
         self._timer_start = time.time()
         self._state = self._stop_cmd
         self._previous_state = self._state
         self._current_cover_position = 0
-        _LOGGER.debug("Initialized cover [%s]", self.name)
+        _LOGGER.debug("Initialized garage door [%s]", self.name)
 
     @property
     def supported_features(self):
         """Flag supported features."""
-        supported_features = SUPPORT_OPEN | SUPPORT_CLOSE | SUPPORT_STOP
+        supported_features = SUPPORT_OPEN | SUPPORT_CLOSE
+        if self._stop_cmd != "":
+            supported_features |= SUPPORT_STOP
         if self._config[CONF_POSITIONING_MODE] != COVER_MODE_NONE:
             supported_features = supported_features | SUPPORT_SET_POSITION
         return supported_features
@@ -107,14 +113,16 @@ class LocaltuyaGarageDoor(LocalTuyaEntity, CoverEntity):
     @property
     def is_closed(self):
         """Return if the cover is closed or not."""
-        if self._config[CONF_POSITIONING_MODE] == COVER_MODE_NONE:
-            return False
-
-        if self._current_cover_position == 0:
-            return True
-        if self._current_cover_position == 100:
-            return False
-        return False
+        state = self._state
+        return state == self._close_cmd
+#        if self._config[CONF_POSITIONING_MODE] == COVER_MODE_NONE:
+#            return False
+#
+#        if self._current_cover_position == 0:
+#            return True
+#        if self._current_cover_position == 100:
+#            return False
+#        return False
 
     async def async_set_cover_position(self, **kwargs):
         """Move the cover to a specific position."""
@@ -191,7 +199,8 @@ class LocaltuyaGarageDoor(LocalTuyaEntity, CoverEntity):
     def status_updated(self):
         """Device status was updated."""
         self._previous_state = self._state
-        self._state = self.dps(self._dp_id)
+        # False=closed, True=open
+        self._state = self._open_cmd if self.dps(self._state_dp_id) else self._close_cmd
         if self._state.isupper():
             self._open_cmd = self._open_cmd.upper()
             self._close_cmd = self._close_cmd.upper()
