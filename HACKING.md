@@ -116,3 +116,7 @@ Look at the contents of switch.py or sensor.py for examples of the contents of s
 	3) async_setup_entry = partial(async_setup_entry, DOMAIN, LocaltuyaSwitch, flow_schema)
 
 
+const.py list ```PLATFORMS``` contains a list of filenames of entities to add.
+can the entries in this be anything or do they have to be existing types?
+
+

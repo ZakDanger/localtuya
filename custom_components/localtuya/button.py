@@ -5,14 +5,9 @@ import time
 from functools import partial
 
 import voluptuous as vol
-from homeassistant.components.cover import (
-    ATTR_POSITION,
+from homeassistant.components.button import (
     DOMAIN,
-    SUPPORT_CLOSE,
-    SUPPORT_OPEN,
-    SUPPORT_SET_POSITION,
-    SUPPORT_STOP,
-    CoverEntity,
+    ButtonEntity,
 )
 
 from .common import LocalTuyaEntity, async_setup_entry
@@ -63,7 +58,7 @@ class LocaltuyaGarageDoor(LocalTuyaEntity, ButtonEntity):
     """Tuya cover device."""
 
     def __init__(self, device, config_entry, switchid, **kwargs):
-        """Initialize a new LocaltuyaCover."""
+        """Initialize a new LocaltuyaGarageDoor."""
         super().__init__(device, config_entry, switchid, _LOGGER, **kwargs)
         commands_set = DEFAULT_COMMANDS_SET
         if self.has_config(CONF_COMMANDS_SET):
@@ -80,9 +75,7 @@ class LocaltuyaGarageDoor(LocalTuyaEntity, ButtonEntity):
     @property
     def supported_features(self):
         """Flag supported features."""
-        supported_features = SUPPORT_OPEN | SUPPORT_CLOSE | SUPPORT_STOP
-        if self._config[CONF_POSITIONING_MODE] != COVER_MODE_NONE:
-            supported_features = supported_features | SUPPORT_SET_POSITION
+        supported_features = 0
         return supported_features
 
     @property
@@ -118,31 +111,7 @@ class LocaltuyaGarageDoor(LocalTuyaEntity, ButtonEntity):
 
     async def async_set_cover_position(self, **kwargs):
         """Move the cover to a specific position."""
-        self.debug("Setting cover position: %r", kwargs[ATTR_POSITION])
-        if self._config[CONF_POSITIONING_MODE] == COVER_MODE_TIMED:
-            newpos = float(kwargs[ATTR_POSITION])
-
-            currpos = self.current_cover_position
-            posdiff = abs(newpos - currpos)
-            mydelay = posdiff / 100.0 * self._config[CONF_SPAN_TIME]
-            if newpos > currpos:
-                self.debug("Opening to %f: delay %f", newpos, mydelay)
-                await self.async_open_cover()
-            else:
-                self.debug("Closing to %f: delay %f", newpos, mydelay)
-                await self.async_close_cover()
-            self.hass.async_create_task(self.async_stop_after_timeout(mydelay))
-            self.debug("Done")
-
-        elif self._config[CONF_POSITIONING_MODE] == COVER_MODE_POSITION:
-            converted_position = int(kwargs[ATTR_POSITION])
-            if self._config[CONF_POSITION_INVERTED]:
-                converted_position = 100 - converted_position
-
-            if 0 <= converted_position <= 100 and self.has_config(CONF_SET_POSITION_DP):
-                await self._device.set_dp(
-                    converted_position, self._config[CONF_SET_POSITION_DP]
-                )
+        self.debug("Done")
 
     async def async_stop_after_timeout(self, delay_sec):
         """Stop the cover if timeout (max movement span) occurred."""
