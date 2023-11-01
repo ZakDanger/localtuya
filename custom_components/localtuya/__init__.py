@@ -97,6 +97,7 @@ async def async_setup(hass: HomeAssistant, config: dict):
 
         await device.set_dp(event.data[CONF_VALUE], event.data[CONF_DP])
 
+    # this gets called whenever a device is found by UDP broadcast packet discovery
     def _device_discovered(device):
         """Update address of device if it has changed."""
         device_ip = device["ip"]
@@ -174,11 +175,6 @@ async def async_setup(hass: HomeAssistant, config: dict):
     )
 
     discovery = TuyaDiscovery(_device_discovered)
-    try:
-        discovery.load_from_file()
-    except Exception:  # pylint: disable=broad-except
-        _LOGGER.exception("failed to load discovery from file")
-    
     try:
         await discovery.start()
         hass.data[DOMAIN][DATA_DISCOVERY] = discovery

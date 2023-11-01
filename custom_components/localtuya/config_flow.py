@@ -516,7 +516,11 @@ class LocalTuyaOptionsFlowHandler(config_entries.OptionsFlow):
         
         if data and DATA_DISCOVERY in data:
             # reload from file in case its contents were changed since home assistant started
-            data[DATA_DISCOVERY].load_from_file()
+            try:
+                data[DATA_DISCOVERY].load_from_file()
+            except Exception:  # pylint: disable=broad-except
+                _LOGGER.exception("failed to load discovery from file")
+            
             _LOGGER.info("LocalTuyaOptionsFlowHandler->async_step_add_device data[DATA_DISCOVERY].devices=%s", str(data[DATA_DISCOVERY].devices))
             self.discovered_devices = data[DATA_DISCOVERY].devices
         else:
