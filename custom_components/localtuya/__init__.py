@@ -288,6 +288,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
 
         await async_remove_orphan_entities(hass, entry)
 
+    _LOGGER.debug("async_setup_entry() about to call setup_entities() CONF_DEVICES=%s, keys=%s, data[CONF_DEVICES]=%s)", CONF_DEVICES, entry.data[CONF_DEVICES].keys(), entry.data[CONF_DEVICES])
+    
     hass.async_create_task(setup_entities(entry.data[CONF_DEVICES].keys()))
 
     unsub_listener = entry.add_update_listener(update_listener)
@@ -371,17 +373,17 @@ async def async_remove_config_entry_device(
 async def async_remove_orphan_entities(hass, entry):
     """Remove entities associated with config entry that has been removed."""
     return
-    ent_reg = er.async_get(hass)
-    entities = {
-        ent.unique_id: ent.entity_id
-        for ent in er.async_entries_for_config_entry(ent_reg, entry.entry_id)
-    }
-    _LOGGER.info("ENTITIES ORPHAN %s", entities)
-    return
-
-    for entity in entry.data[CONF_ENTITIES]:
-        if entity[CONF_ID] in entities:
-            del entities[entity[CONF_ID]]
-
-    for entity_id in entities.values():
-        ent_reg.async_remove(entity_id)
+#    ent_reg = er.async_get(hass)
+#    entities = {
+#        ent.unique_id: ent.entity_id
+#        for ent in er.async_entries_for_config_entry(ent_reg, entry.entry_id)
+#    }
+#    _LOGGER.info("ENTITIES ORPHAN %s", entities)
+#    return
+#
+#    for entity in entry.data[CONF_ENTITIES]:
+#        if entity[CONF_ID] in entities:
+#            del entities[entity[CONF_ID]]
+#
+#    for entity_id in entities.values():
+#        ent_reg.async_remove(entity_id)
