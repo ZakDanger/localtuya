@@ -63,8 +63,10 @@ SERVICE_SET_DP_SCHEMA = vol.Schema(
 )
 
 
+# This is called when Home Assistant starts up.
 async def async_setup(hass: HomeAssistant, config: dict):
     """Set up the LocalTuya integration component."""
+    _LOGGER.debug("async_setup() : config = %s", config)
     hass.data.setdefault(DOMAIN, {})
     hass.data[DOMAIN][TUYA_DEVICES] = {}
 
@@ -229,8 +231,13 @@ async def async_migrate_entry(hass, config_entry: ConfigEntry):
     return True
 
 
+# This is called when Home Assistant starts up.
+# It is called after async_setup() and is called once for every entry.
+# 
+# This is also called whenna new entry is added at runtime.
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     """Set up LocalTuya integration from a config entry."""
+    _LOGGER.debug("async_setup_entry(%s)", entry.entry_id)
     if entry.version < ENTRIES_VERSION:
         _LOGGER.debug(
             "Skipping setup for entry %s since its version (%s) is old",
@@ -359,6 +366,8 @@ async def async_remove_config_entry_device(
     return True
 
 
+# called from async_setup_entry()
+# set to return immediately.. so i guess not used atm
 async def async_remove_orphan_entities(hass, entry):
     """Remove entities associated with config entry that has been removed."""
     return

@@ -92,6 +92,8 @@ class TuyaDiscovery(asyncio.DatagramProtocol):
                 self.device_found(device)
         _LOGGER.info("TuyaDiscovery.load_from_file(%s) DONE", fn)
 
+# discover devices for 6 seconds
+# then return those devices
 async def discover():
     """Discover and return devices on local network."""
     discovery = TuyaDiscovery()

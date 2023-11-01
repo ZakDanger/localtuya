@@ -93,7 +93,8 @@ diagnostics.py - async_get_config_entry_diagnostics, async_get_device_diagnostic
 discovery.py - TuyaDiscovery(asyncio.DatagramProtocol)
 	discover()
 
-// language strings for webpage GUI
+// language strings for config_flow webpage GUI
+// strings.json should be the same as en.json afaik
 strings.json
 translations - en.json, it.json, pt-BR.json
 

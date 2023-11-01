@@ -355,7 +355,7 @@ class LocaltuyaConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         # when this form is initially displayed, this will be None
         # this is not None when submitting this form
         if user_input is not None:
-            # if "No Cloud" is ticked, then set empty values for all data
+            # if "No Cloud" is ticked, then set empty values for: client_id, client_secret and user_id
             # otherwise use the passed in data
             if user_input.get(CONF_NO_CLOUD):
                 for i in [CONF_CLIENT_ID, CONF_CLIENT_SECRET, CONF_USER_ID]:
@@ -372,6 +372,7 @@ class LocaltuyaConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         defaults = {}
         defaults.update(user_input or {})
 
+        # setup cloud access
         return self.async_show_form(
             step_id="user",
             data_schema=schema_defaults(CLOUD_SETUP_SCHEMA, **defaults),
@@ -379,6 +380,7 @@ class LocaltuyaConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             description_placeholders=placeholders,
         )
 
+    # create new "integration entry" with no devices registered
     async def _create_entry(self, user_input):
         """Register new entry."""
         if self._async_current_entries():
@@ -387,6 +389,8 @@ class LocaltuyaConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         await self.async_set_unique_id(user_input.get(CONF_USER_ID))
         user_input[CONF_DEVICES] = {}
 
+        # use "username" as entry id
+        # default username is "localtuya"
         return self.async_create_entry(
             title=user_input.get(CONF_USERNAME),
             data=user_input,
