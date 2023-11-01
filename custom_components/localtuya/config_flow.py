@@ -514,8 +514,9 @@ class LocalTuyaOptionsFlowHandler(config_entries.OptionsFlow):
         if data and DATA_DISCOVERY in data:
             _LOGGER.info("LocalTuyaOptionsFlowHandler->async_step_add_device data and DATA_DISCOVERY exists")
         
-        #if data and DATA_DISCOVERY in data:
-        if False:
+        if data and DATA_DISCOVERY in data:
+            # reload from file in case its contents were changed since home assistant started
+            data[DATA_DISCOVERY].load_from_file()
             _LOGGER.info("LocalTuyaOptionsFlowHandler->async_step_add_device data[DATA_DISCOVERY].devices=%s", str(data[DATA_DISCOVERY].devices))
             self.discovered_devices = data[DATA_DISCOVERY].devices
         else:

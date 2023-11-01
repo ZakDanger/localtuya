@@ -174,6 +174,7 @@ async def async_setup(hass: HomeAssistant, config: dict):
     )
 
     discovery = TuyaDiscovery(_device_discovered)
+    discovery.load_from_file()
     try:
         await discovery.start()
         hass.data[DOMAIN][DATA_DISCOVERY] = discovery
