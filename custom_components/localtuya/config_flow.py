@@ -507,6 +507,13 @@ class LocalTuyaOptionsFlowHandler(config_entries.OptionsFlow):
         _LOGGER.info("LocalTuyaOptionsFlowHandler->async_step_add_device data=%s", str(data))
         _LOGGER.info("LocalTuyaOptionsFlowHandler->async_step_add_device DATA_DISCOVERY=%s", str(DATA_DISCOVERY))
         
+        if data:
+            _LOGGER.info("LocalTuyaOptionsFlowHandler->async_step_add_device data exists")
+        if DATA_DISCOVERY in data:
+            _LOGGER.info("LocalTuyaOptionsFlowHandler->async_step_add_device DATA_DISCOVERY exists")
+        if data and DATA_DISCOVERY in data:
+            _LOGGER.info("LocalTuyaOptionsFlowHandler->async_step_add_device data and DATA_DISCOVERY exists")
+        
         #if data and DATA_DISCOVERY in data:
         if False:
             _LOGGER.info("LocalTuyaOptionsFlowHandler->async_step_add_device data[DATA_DISCOVERY].devices=%s", str(data[DATA_DISCOVERY].devices))
