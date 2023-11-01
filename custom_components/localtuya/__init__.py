@@ -234,10 +234,10 @@ async def async_migrate_entry(hass, config_entry: ConfigEntry):
 # This is called when Home Assistant starts up.
 # It is called after async_setup() and is called once for every entry.
 # 
-# This is also called whenna new entry is added at runtime.
+# This is also called when a new entry is added at runtime.
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     """Set up LocalTuya integration from a config entry."""
-    _LOGGER.debug("async_setup_entry(%s)", entry.entry_id)
+    _LOGGER.debug("async_setup_entry(id=%s, data=%s)", entry.entry_id, entry.data)
     if entry.version < ENTRIES_VERSION:
         _LOGGER.debug(
             "Skipping setup for entry %s since its version (%s) is old",
