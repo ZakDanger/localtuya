@@ -8,7 +8,6 @@ DATA_CLOUD = "cloud_data"
 # Platforms in this list must support config flows
 PLATFORMS = [
     "binary_sensor",
-    "button",
     "climate",
     "cover",
     "fan",
