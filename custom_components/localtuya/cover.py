@@ -104,7 +104,7 @@ class TuyaLocalCover(LocalTuyaEntity, CoverEntity):
             state_flag = self.dps(self._action_dp_id)
             state = self._state_flag_to_str(state_flag)
             if state in ["opening", "closing", "opened", "closed"]:
-                return action
+                return state
         return None
 
     def _state_to_percent(self, state):
