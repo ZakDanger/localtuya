@@ -114,6 +114,7 @@ class LocaltuyaVacuum(LocalTuyaEntity, StateVacuumEntity):
     def supported_features(self):
         """Flag supported features."""
         supported_features = (
+        supported_features = (
             VacuumEntityFeature.START
             | VacuumEntityFeature.PAUSE
             | VacuumEntityFeature.STOP

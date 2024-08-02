@@ -502,3 +502,4 @@ class LocaltuyaClimate(LocalTuyaEntity, ClimateEntity):
 
 
 async_setup_entry = partial(async_setup_entry, DOMAIN, LocaltuyaClimate, flow_schema)
+

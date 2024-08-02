@@ -8,11 +8,7 @@ import voluptuous as vol
 from homeassistant.components.cover import (
     ATTR_POSITION,
     DOMAIN,
-    SUPPORT_CLOSE,
-    SUPPORT_OPEN,
-    SUPPORT_SET_POSITION,
-    SUPPORT_STOP,
-    CoverEntity,
+    CoverEntity, CoverEntityFeature,
 )
 
 from .common import LocalTuyaEntity, async_setup_entry
@@ -85,14 +81,13 @@ class TuyaLocalCover(LocalTuyaEntity, CoverEntity):
         self._current_cover_position = 0
         _LOGGER.debug("Initialized garage door [%s]", self.name)
 
-    @property
     def supported_features(self):
         """Flag supported features."""
-        supported = SUPPORT_OPEN | SUPPORT_CLOSE
+        supported = CoverEntityFeature.OPEN | CoverEntityFeature.CLOSE
         if self._stop_cmd != "":
-            supported |= SUPPORT_STOP
+            supported |= CoverEntityFeature.STOP
         if self._config[CONF_POSITIONING_MODE] != COVER_MODE_NONE:
-            supported |= SUPPORT_SET_POSITION
+            supported |= CoverEntityFeature.SET_POSITION
         return supported
 
     @property

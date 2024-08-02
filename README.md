@@ -47,7 +47,7 @@ For manual installation, copy the localtuya folder and all of its contents into 
 **NOTE: starting from v4.0.0, configuration using YAML files is no longer supported. The integration can only be configured using the config flow.**
 
 
-To start configuring the integration, just press the "+ADD INTEGRATION" button in the Settings - Devices & Services page, and select LocalTuya integration from the drop-down menu.
+To start configuring the integration, just press the "+ADD INTEGRATION" button in the Settings - Integrations page, and select LocalTuya from the drop-down menu.
 The Cloud API configuration page will appear, requesting to input your Tuya IoT Platform account credentials:
 
 ![cloud_setup](https://github.com/rospogrigio/localtuya-homeassistant/blob/master/img/9-cloud_setup.png)
@@ -85,7 +85,7 @@ You can then proceed Adding or Editing your Tuya devices.
 
 If you select to "Add or Edit a device", a drop-down menu will appear containing the list of detected devices (using auto-discovery if adding was selected, or the list of already configured devices if editing was selected): you can select one of these, or manually input all the parameters selecting the "..." option.
 
-> **Note: The tuya app on your device must be closed for the following steps to work reliably.**
+> **Note: The tuya app on your device must be closed for the following steps to work reliably.**
 
 
 ![discovery](https://github.com/rospogrigio/localtuya-homeassistant/blob/master/img/1-discovery.png)
@@ -156,6 +156,32 @@ You can obtain Energy monitoring (voltage, current) in two different ways:
                  {{ states.switch.sw01.attributes.current_consumption }}
                unit_of_measurement: 'W'
 ```
+
+# Climates
+
+There are a multitude of Tuya based climates out there, both heaters,
+thermostats and ACs. The all seems to be integrated in different ways and it's
+hard to find a common DP mapping. Below are a table of DP to product mapping
+which are currently seen working. Use it as a guide for your own mapping and
+please contribute to the list if you have the possibility.
+
+| DP  | Moes BHT 002                                            | Qlima WMS S + SC52 (AB;AF)                              | Avatto                                     |
+|-----|---------------------------------------------------------|---------------------------------------------------------|--------------------------------------------|
+| 1   | ID: On/Off<br>{true, false}                             | ID: On/Off<br>{true, false}                             | ID: On/Off<br>{true, false}                |
+| 2   | Target temperature<br>Integer, scaling: 0.5             | Target temperature<br>Integer, scaling 1                | Target temperature<br>Integer, scaling 1   |
+| 3   | Current temperature<br>Integer, scaling: 0.5            | Current temperature<br>Integer, scaling: 1              | Current temperature<br>Integer, scaling: 1 |
+| 4   | Mode<br>{0, 1}                                          | Mode<br>{"hot", "wind", "wet", "cold", "auto"}          | ?                                          |
+| 5   | Eco mode<br>?                                           | Fan mode<br>{"strong", "high", "middle", "low", "auto"} | ?                                          |
+| 15  | Not supported                                           | Supported, unknown<br>{true, false}                     | ?                                          |
+| 19  | Not supported                                           | Temperature unit<br>{"c", "f"}                          | ?                                          |
+| 23  | Not supported                                           | Supported, unknown<br>Integer, eg. 68                   | ?                                          |
+| 24  | Not supported                                           | Supported, unknown<br>Integer, eg. 64                   | ?                                          |
+| 101 | Not supported                                           | Outdoor temperature<br>Integer. Scaling: 1              | ?                                          |
+| 102 | Temperature of external sensor<br>Integer, scaling: 0.5 | Supported, unknown<br>Integer, eg. 34                   | ?                                          |
+| 104 | Supported, unknown<br>{true, false(?)}                  | Not supported                                           | ?                                          |
+
+[Moes BHT 002](https://community.home-assistant.io/t/moes-bht-002-thermostat-local-control-tuya-based/151953/47)
+[Avatto thermostat](https://pl.aliexpress.com/item/1005001605377377.html?gatewayAdapt=glo2pol)
 
 # Debugging
 
