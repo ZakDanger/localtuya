@@ -106,7 +106,6 @@ Once you press "Submit", the connection is tested to check that everything works
 
 ![image](https://github.com/rospogrigio/localtuya-homeassistant/blob/master/img/2-device.png)
 
-
 Then, it's time to add the entities: this step will take place several times. First, select the entity type from the drop-down menu to set it up.
 After you have defined all the needed entities, leave the "Do not add more entities" checkbox checked: this will complete the procedure.
 

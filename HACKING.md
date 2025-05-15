@@ -132,3 +132,25 @@ Settings -> Devices & Services -> LocalTuya -> X devices -> Add Device.
 logs show this:
 2023-10-30 23:56:56.145 INFO (MainThread) [custom_components.localtuya.config_flow] LocaltuyaConfigFlow->async_step_user user_input=None
 
+
+
+## Changes between official source repo and my code
+
+### root dir of git repo
+hacs.json - "Local Tuya" to "Local Tuya - Zak"
+info.md - added 'Zak' and some more comments/explanations
+README.md - added 'Zak' and some more comments/explanations, fixed weird unicode character in readme
+tox.ini - changed "{toxinidir}/localtuya-homeassistant" to "{toxinidir}/localtuya"
+
+### custom_components/localtuya dir of git repo
+
+#### only added comments and debug prints
+__init__.py - added debug prints and comments
+common.py - changed debug print to warning print
+
+#### important changes
+config_flow.py - added "load config from file", added abort config if already configed, plus various comments
+cover.py - altered to support my specific garage door opener
+discovery.py - added "load config from file"
+manifest.json - changed to point to my github repo, changed to my name
+
